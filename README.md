@@ -1,6 +1,6 @@
-<div align="center">
-# Everything Equation App Framework
-</div>
+<h1 align="center">
+Everything Equation App Framework
+</h1>
 
 This is a description of how an automated theorem prover operates. It can be employed to solve theorems other than those in mathematics, such as the theorem that a gun exists that meets certain criteria, such as firing 200 rounds in 2 minutes.
 
@@ -12,24 +12,27 @@ The axioms are as follows:
 A NAND B = C
 </div>
 
+<br>
+
 <div align="center">
+  
 |A|B|C|
-|:-:|:-:|:-:|
+| :---: | :---: | :---: |
 |0|0|1|
-|:-:|:-:|:-:|
 |0|1|1|
-|:-:|:-:|:-:|
 |1|0|1|
-|:-:|:-:|:-:|
 |1|1|0|
-|:-:|:-:|:-:|
 </div>
+
+<br>
 
 Tseytin transformation for NAND as represented by my 3SAT solver:
 
 <div align="center">
 (~A | ~B | ~C) & (A | C) & (B | C)
 </div>
+
+<br>
 
 We accept the above relationship to be true as defined.
 
@@ -103,31 +106,25 @@ Then we check for satisfiability. If satisfiable (which it would be), then we ha
 
 Here is the final format consisting first of the independent boolean variables followed by the tabular NAND operator cells:
 
+<br>
+
 <div align="center">
-|||
-|:-:|:-:|
+  
+| cell number | description |
+| :---: | :---: |
 |0|Boolean variable 0|
-|:-:|:-:|
 |1|Boolean variable 1|
-|:-:|:-:|
 |2|Boolean variable 2|
-|:-:|:-:|
 |...|...|
-|:-:|:-:|
 |n-1|Boolean variable n-1|
-|:-:|:-:|
 |n|Cell n = X0 NAND Y0|
-|:-:|:-:|
 |n+1|Cell n+1 = X1 NAND Y1|
-|:-:|:-:|
 |n+2|Cell n+2 = X2 NAND Y2|
-|:-:|:-:|
 |...|...|
-|:-:|:-:|
 |n+1|Cell n+z = XZ + YZ|
-|:-:|:-:|
 </div>
 
+<br>
 
 Here, each NAND operator inversely conjoins two boolean variables, yielding a third variable that represents the cell. We force both of these variables to reference cell variables and allotted variables of lower order than the cell itself with no self-referential variables to avoid contradictions, Russell’s Paradox, and other related issues. The consistency of using a standard NAND gate every time means that it’s very easy to produce the data set and very easy to interpret the results. When otherwise using multiple types of logic gates, things get complicated and messy.
 
@@ -137,11 +134,15 @@ So how do we actually encode the above table with the constraint that a cell is 
 (P->(C = A NAND B))
 </div>
 
+<br>
+
 We can represent our implication operator as follows:
 
 <div align="center">
 (!P | (C = A NAND B))
 </div>
+
+<br>
 
 We may rewrite our above two expressions using the CNF (conjunctive normal form) for the NAND operator:
 
@@ -149,9 +150,13 @@ We may rewrite our above two expressions using the CNF (conjunctive normal form)
 P->((!A | !B | C) & (A | C) & (B | C))
 </div>
 
+<br>
+
 <div align="center">
 (!P | ((!A | !B | C) & (A | C) & (B | C)))
 </div>
+
+<br>
 
 We place the !P into each of the clauses:
 
@@ -159,11 +164,15 @@ We place the !P into each of the clauses:
 (!P | (!A | !B | !C)) & (!P | (A | C)) & (!P | (B | C))
 </div>
 
+<br>
+
 Simplifying:
 
 <div align="center">
 (!P | !A | !B | !C) & (!P | A | C) & (!P | B | C)
 </div>
+
+<br>
 
 The 3SAT solver requires all clauses to have exactly 3 variables, so we introduce a helper variable to break up the first clause which has 4 variables:
 
@@ -171,35 +180,64 @@ The 3SAT solver requires all clauses to have exactly 3 variables, so we introduc
 (!P | !A | H) & (!H | !B | C) & (!P | A | C) & (!P | B | C)
 </div>
 
+<br>
+
 Our plan was to compute cell C3. The conditional Px identifies which combination of two of C0, C1, and C2 is being used. We also want to force either zero or one unique combined pair of C0, C1, C2. We want the option of exactly one unique pair so there is no dubiety and we want the option of exactly zero unique pairs because having zero usage of the cell represents our NO-OP code (the overall size of a proof of a theorem is impossible to predict, so if the proof uses 1001 cells and you’ve arranged for there to be up to 8000 cells, the proof still is possible to generate and contain within our table). In order to achieve this, we say that usage of one precondition variable Px implies no lower Py is used like this: Px->!Py for all y lower than x. Following is our computation for that cell.
 
+<br>
 P0->(C3 = C0 NAND C0)
+<br>
 P1->(C3 = C0 NAND C1)
+<br>
 P2->(C3 = C0 NAND C2)
+<br>
 P3->(C3 = C1 NAND C1)
+<br>
 P4->(C3 = C1 NAND C2)
+<br>
 P5->(C3 = C2 NAND C2)
+<br>
 P1->!P0
+<br>
 P2->!P0
+<br>
 P2->!P1
+<br>
 P3->!P0
+<br>
 P3->!P1
+<br>
 P3->!P2
+<br>
 P4->!P0
+<br>
 P4->!P1
+<br>
 P4->!P2
+<br>
 P4->!P3
+<br>
 P5->!P0
+<br>
 P5->!P1
+<br>
 P5->!P2
+<br>
 P5->!P3
+<br>
 P5->!P4
-
+<br>
+<br>
 And again, because each CNF clause must contain exactly three literals, we include the -1 value for false:
+
+<br>
+<br>
 
 <div align="center">
 (!Px | !Py | F) = (!Px | !Py | -1)
 </div>
+
+<br>
 
 The generation of the 3CNF for a table of a given size can be parallelized because the majority of the table is composed of blank cells.
 
@@ -207,9 +245,9 @@ Within the very last cells of the table we express the goal state that is desire
 
 
 
-<div align="center">
-## Application to the Grand Unified Theory
-</div>
+<h2 align="center">
+Application to the Grand Unified Theory
+</h2>
 
 We wish to represent the field of chemistry using mathematics and the field of physics. To achieve this we present a new atomic model of the universe. We dismiss the entire Standard Model containing electronics, protons, neutrons, muons, photons, quarks, the Higgs-Boson, and the like. We also dismiss the entire field of quantum theory. In place of these spectacular failures to explain the subatomic world, we consider the stars in the sky to be atoms for some very large people, and the atoms in our world to be stars for some very small people. The Earth is a subatomic particle, as is every planet, asteroid, spec of dust, and anything else that has less mass than is necessary to sustain the “proton-proton” nuclear fusion reaction that occurs starting with star-level atoms of the hydrogen species (approximately 0.08 masses of our Sun). This subatomic matter that is on a smaller scale than our atom-level atoms is the identity of the mysterious dark matter, and is what electrical current and magnetic fields are made of. Because a star-level hydrogen atom is 0.08 solar masses, this means that our Sun is a carbon-12 atom, having approximately 12.5 times the mass of a star-level hydrogen atom. All of chemistry can be represented by the masses of the atoms. Just as the masses of the stars are not expressed as exact integer multiples of the mass of a star-level hydrogen atom, the masses of atom-level atoms also are not exact integer multiples of an atom-level hydrogen atom. And just as stars are both created from nebula matter coming together and destroyed at the end of their lives, atom-level atoms are also similarly both created and destroyed.
 
