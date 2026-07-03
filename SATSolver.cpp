@@ -97,6 +97,8 @@ void SATSolver_create(SATSolver* s, __int64* a, __int64* b, __int64* c, __int64 
     s->leading_trues = leading_trues;
 
     s->Z = SATSolver_create_boundary(true, chops, chop, n, leading_trues);
+    s->Z[0] = false;
+    s->Z[1] = true;
 
     /*
 	for (__int64 i = 0; i < n; i++)
@@ -388,6 +390,7 @@ bool two_sat(__int64* lst_l_parm, __int64* lst_r_parm, __int64 k_parm, __int64 n
     bool* Z = new bool[n];
     for (__int64 i = 0; i < n; i++)
         Z[i] = false;
+    Z[1] = true;
 
     bool* falses = new bool[n];
     bool* trues = new bool[n];
@@ -399,7 +402,7 @@ bool two_sat(__int64* lst_l_parm, __int64* lst_r_parm, __int64 k_parm, __int64 n
             trues[i] = false;
         }
 
-        for (__int64 i = 2; i < n_parm; i++) {
+        for (__int64 i = 0; i < n_parm; i++) {
             if (is_f[i])
                 falses[encoding[i]] = true;
             if (is_t[i])
@@ -418,7 +421,7 @@ bool two_sat(__int64* lst_l_parm, __int64* lst_r_parm, __int64 k_parm, __int64 n
 
             changed = false;
 
-            for (__int64 i = 2; i < n; i++) {
+            for (__int64 i = 0; i < n; i++) {
                 if (trues[i]) {
                     for (__int64 j = 0; j < true_implies_top[i] + 1; j++) {
 
@@ -463,7 +466,7 @@ bool two_sat(__int64* lst_l_parm, __int64* lst_r_parm, __int64 k_parm, __int64 n
 
         bool contradiction = false;
 
-        for (__int64 i = 2; i < n; i++)
+        for (__int64 i = 0; i < n; i++)
             if (trues[i] && falses[i]) {
                 contradiction = true;
                 break;
@@ -539,6 +542,7 @@ bool SATSolver_isSat(SATSolver* s, bool* sln) {
         always_f[i] = false;
         always_t[i] = false;
     }
+    always_t[1] = true;
 
     for (__int64 i = 0; i < s->k; i++) {
         __int64 count_f = 0;
@@ -578,7 +582,7 @@ bool SATSolver_isSat(SATSolver* s, bool* sln) {
             return false;
         }
 
-    for (__int64 i = 2; i < s->n; i++)
+    for (__int64 i = 0; i < s->n; i++)
         if (always_f[i] && always_t[i]) {
             delete[] always_f;
             delete[] always_t;
@@ -598,7 +602,7 @@ bool SATSolver_isSat(SATSolver* s, bool* sln) {
             is_t[i] = false;
         }
 
-        for (__int64 i = 2; i < s->n; i++) {
+        for (__int64 i = 0; i < s->n; i++) {
 
             if (always_f[i])
                 is_f[i] = true;
@@ -620,7 +624,7 @@ bool SATSolver_isSat(SATSolver* s, bool* sln) {
 
             changed = false;
 
-            for (__int64 i = 2; i < s->n; i++) {
+            for (__int64 i = 0; i < s->n; i++) {
 
                 if (is_t[i]) {
 
@@ -691,7 +695,7 @@ bool SATSolver_isSat(SATSolver* s, bool* sln) {
 
         __int64 size_2sat = 0;
 
-        for (__int64 i = 2; i < s->n; i++) {
+        for (__int64 i = 0; i < s->n; i++) {
             if (is_t[i])
                 size_2sat += s->cd_sizes_t[i];
             if (is_f[i])
@@ -703,7 +707,7 @@ bool SATSolver_isSat(SATSolver* s, bool* sln) {
         __int64 cd_2sat_cur_sz_f = 0;
         __int64 cd_2sat_cur_sz_t = 0;
 
-        for (__int64 i = 2; i < s->n; i++) {
+        for (__int64 i = 0; i < s->n; i++) {
 
             if (is_t[i]) {
 
@@ -743,7 +747,7 @@ bool SATSolver_isSat(SATSolver* s, bool* sln) {
             {
                 std::lock_guard<std::mutex> lock(mtx);
 
-                for (__int64 i = 2; i < s->n; i++)
+                for (__int64 i = 0; i < s->n; i++)
                     sln[i] = s->Z[i];
             }
 
