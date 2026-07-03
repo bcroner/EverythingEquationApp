@@ -1,0 +1,40 @@
+#ifndef __UNIVERSECOMPUTERSIMULATION_HPP__
+#define __UNIVERSECOMPUTERSIMULATION_HPP__
+
+enum direction {
+	reverse, forward
+};
+
+enum energy_state {
+	ground, excited
+};
+
+typedef struct Quantum_Point_tag {
+
+	__int64 x;
+	__int64 y;
+	__int64 z;
+
+	energy_state quantum_state;
+
+} Quantum_Point;
+
+typedef struct UniverseComputerSimulation_tag {
+
+	direction time_direction;
+
+	__int64 axis_2_pow;
+
+	Quantum_Point** quantum_points;
+
+	__int64 quantum_points_vtop;
+	__int64 quantum_points_vcap;
+
+} UniverseComputerSimulation;
+
+Quantum_Point* simp_quantum_point_vector_create(__int64 init_sz);
+Quantum_Point* simp_quantum_point_vector_read(Quantum_Point** v, __int64 vtop, __int64 vcap, __int64 loc);
+void simp_quantum_point_vector_append(Quantum_Point*** v, __int64* vtop, __int64* vcap, Quantum_Point* data);
+Quantum_Point* UniverseComputerSimulation_create_quantum_point(__int64 x, __int64 y, __int64 z, energy_state quantum_state);
+
+#endif
