@@ -3,14 +3,14 @@
 
 #include "UniverseComputerSimulation.hpp"
 
-Quantum_Point* simp_quantum_point_vector_create(__int64 init_sz) {
+Point* simp_point_vector_create(__int64 init_sz) {
 
-    Quantum_Point* ret = new Quantum_Point[init_sz];
+    Point* ret = new Point[init_sz];
     return ret;
 
 }
 
-Quantum_Point* simp_quantum_point_vector_read(Quantum_Point** v, __int64 vtop, __int64 vcap, __int64 loc) {
+Point* simp_point_vector_read(Point** v, __int64 vtop, __int64 vcap, __int64 loc) {
 
     if (loc > vtop)
         return 0;
@@ -18,14 +18,14 @@ Quantum_Point* simp_quantum_point_vector_read(Quantum_Point** v, __int64 vtop, _
     return v[loc];
 }
 
-void simp_quantum_point_vector_append(Quantum_Point*** v, __int64* vtop, __int64* vcap, Quantum_Point* data) {
+void simp_point_vector_append(Point*** v, __int64* vtop, __int64* vcap, Point* data) {
 
     *vtop = *vtop + 1;
 
     if (*vtop < *vcap)
         (*v)[*vtop] = data;
     else {
-        Quantum_Point*** newv = new Quantum_Point**[*vcap * 2];
+        Point*** newv = new Point**[*vcap * 2];
         for (__int64 i = 0; i < *vcap * 2; i++)
             newv[i] = 0;
         for (__int64 i = 0; i < *vcap; i++)
@@ -38,16 +38,16 @@ void simp_quantum_point_vector_append(Quantum_Point*** v, __int64* vtop, __int64
 
 }
 
-Quantum_Point* QuantumUniverseComputerSimulation_create_quantum_point(__int64 x, __int64 y, __int64 z, energy_state quantum_state) {
+Point* QuantumUniverseComputerSimulation_create_point(__int64 x, __int64 y, __int64 z, energy_state point_state) {
 
-    Quantum_Point* q_point = new Quantum_Point();
+    Point* point = new Point();
 
-    q_point->x = x;
-    q_point->y = y;
-    q_point->z = z;
-    q_point->quantum_state = quantum_state;
+    point->x = x;
+    point->y = y;
+    point->z = z;
+    point->point_state = point_state;
 
-	return q_point;
+	return point;
 }
 
 #endif
