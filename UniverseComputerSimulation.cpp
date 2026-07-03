@@ -50,6 +50,17 @@ Point* PointUniverseComputerSimulation_create_point(__int64 x, __int64 y, __int6
 	return point;
 }
 
+Atom_Star_Galaxy_Dark_Matter* atom_star_galaxy_dark_matter_point_universe_computer_simulation_create_point(__int64 x, __int64 y, __int64 z, __int64 mass) {
+
+    Atom_Star_Galaxy_Dark_Matter* point = new Atom_Star_Galaxy_Dark_Matter();
+    point->x = x;
+    point->y = y;
+    point->z = z;
+    point->mass = mass;
+	return point;
+
+}
+
 
 __int64* simp_vector_create(__int64 init_sz) {
 
