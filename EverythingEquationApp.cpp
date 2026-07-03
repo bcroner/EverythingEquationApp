@@ -2,26 +2,25 @@
 #define __EVERYTHINGEQUATIONAPP_CPP__
 
 #include "SATSolver.hpp"
-#include "SATFramework.hpp"
 #include "EverythingEquationApp.hpp"
 
 NAND_VECTOR* NAND_VECTOR_create() {
 
 	NAND_VECTOR* nand_vector = new NAND_VECTOR();
 
-	xnor_vector->a = simp_vector_create(16);
-	xnor_vector->b = simp_vector_create(16);
-	xnor_vector->a_vtop = -1;
-	xnor_vector->a_vcap = 16;
-	xnor_vector->b_vtop = -1;
-	xnor_vector->b_vcap = 16;
+	nand_vector->a = simp_vector_create(16);
+	nand_vector->b = simp_vector_create(16);
+	nand_vector->a_vtop = -1;
+	nand_vector->a_vcap = 16;
+	nand_vector->b_vtop = -1;
+	nand_vector->b_vcap = 16;
 
-	simp_vector_append(&(xnor_vector->a), &(xnor_vector->a_vtop), &(xnor_vector->a_vcap), TRUE_3SAT);
-	simp_vector_append(&(xnor_vector->b), &(xnor_vector->b_vtop), &(xnor_vector->b_vcap), TRUE_3SAT);
-	simp_vector_append(&(xnor_vector->a), &(xnor_vector->a_vtop), &(xnor_vector->a_vcap), FALSE_3SAT);
-	simp_vector_append(&(xnor_vector->b), &(xnor_vector->b_vtop), &(xnor_vector->b_vcap), FALSE_3SAT);
+	simp_vector_append(&(nand_vector->a), &(nand_vector->a_vtop), &(nand_vector->a_vcap), TRUE_3SAT);
+	simp_vector_append(&(nand_vector->b), &(nand_vector->b_vtop), &(nand_vector->b_vcap), TRUE_3SAT);
+	simp_vector_append(&(nand_vector->a), &(nand_vector->a_vtop), &(nand_vector->a_vcap), FALSE_3SAT);
+	simp_vector_append(&(nand_vector->b), &(nand_vector->b_vtop), &(nand_vector->b_vcap), FALSE_3SAT);
 
-	return xnor_vector;
+	return nand_vector;
 }
 
 NAND_VECTOR* NAND_VECTOR_destroy(NAND_VECTOR* nand_vector) {
@@ -77,7 +76,6 @@ SAT_VECTOR* SAT_VECTOR_create(NAND_VECTOR* definition) {
 	translation->h_vtop = -1;
 	translation->h_vcap = 16;
 
-
 	__int64 first_avail_p_h_ix = 1;
 
 	for (__int64 i = 2; i <= definition->a_vtop + 1; i++) {
@@ -86,14 +84,14 @@ SAT_VECTOR* SAT_VECTOR_create(NAND_VECTOR* definition) {
 
 			__int64 p = first_avail_p_h_ix;
 
-			simp_vector_append(&(translation->p), &(translation->p_vtop), &(translation->p_vcap), first_avail_p_h_ix);
+			simp_vector_append(&(translation->p), &(translation->p_vtop), &(translation->p_vcap), p);
 			first_avail_p_h_ix++;
 			
 			for (__int64 k = j-1; k >= 0; k--) {
 
 				__int64 h = first_avail_p_h_ix;
 
-				simp_vector_append(&(translation->h), &(translation->h_vtop), &(translation->h_vcap), first_avail_p_h_ix);
+				simp_vector_append(&(translation->h), &(translation->h_vtop), &(translation->h_vcap), p);
 				first_avail_p_h_ix++;
 
 				// (!P | !A | H) & (!H | !B | C) & (!P | A | C) & (!P | B | C)
@@ -116,6 +114,15 @@ SAT_VECTOR* SAT_VECTOR_create(NAND_VECTOR* definition) {
 			}
 
 		}
+
+	}
+
+	__int64 top = translation->a_vtop + 1;
+
+	for (__int64 i = 0; i < first_avail_p_h_ix; i++) {
+		
+		translation->p[i] += top;
+		translation->h[i] += top;
 
 	}
 

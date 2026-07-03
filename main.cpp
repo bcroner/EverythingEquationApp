@@ -8,7 +8,7 @@
 int main() {
 
 	NAND_VECTOR* definition = NAND_VECTOR_create();
-	SAT_VECTOR* translation = SAT_VECTOR_create();
+	SAT_VECTOR* translation = SAT_VECTOR_create(definition);
 
     return 0;
 }
