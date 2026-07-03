@@ -5,9 +5,9 @@
 #include "SATFramework.hpp"
 #include "EverythingEquationApp.hpp"
 
-XNOR_VECTOR* XNOR_VECTOR_create() {
+NAND_VECTOR* NAND_VECTOR_create() {
 
-	XNOR_VECTOR* xnor_vector = new XNOR_VECTOR;
+	NAND_VECTOR* nand_vector = new NAND_VECTOR();
 
 	xnor_vector->a = simp_vector_create(16);
 	xnor_vector->b = simp_vector_create(16);
@@ -24,49 +24,95 @@ XNOR_VECTOR* XNOR_VECTOR_create() {
 	return xnor_vector;
 }
 
-XNOR_VECTOR* XNOR_VECTOR_destroy(XNOR_VECTOR* xnor_vector) {
+NAND_VECTOR* NAND_VECTOR_destroy(NAND_VECTOR* nand_vector) {
 
-	if (xnor_vector) {
-		if (xnor_vector->a) {
-			delete[] xnor_vector->a;
-			xnor_vector->a = nullptr;
+	if (nand_vector) {
+		if (nand_vector->a) {
+			delete[] nand_vector->a;
+			nand_vector->a = nullptr;
 		}
-		if (xnor_vector->b) {
-			delete[] xnor_vector->b;
-			xnor_vector->b = nullptr;
+		if (nand_vector->b) {
+			delete[] nand_vector->b;
+			nand_vector->b = nullptr;
 		}
-		delete xnor_vector;
-		xnor_vector = nullptr;
+		delete nand_vector;
+		nand_vector = nullptr;
 	}
 
-	return xnor_vector;
+	return nand_vector;
 
 }
 
-void XNOR_VECTOR_create_entry(XNOR_VECTOR* xnor_vector, __int64 a, __int64 b) {
+void NAND_VECTOR_create_entry(NAND_VECTOR* nand_vector, __int64 a, __int64 b) {
 
-	simp_vector_append(&(xnor_vector->a), &(xnor_vector->a_vtop), &(xnor_vector->a_vcap), a);
-	simp_vector_append(&(xnor_vector->b), &(xnor_vector->b_vtop), &(xnor_vector->b_vcap), b);
+	simp_vector_append(&(nand_vector->a), &(nand_vector->a_vtop), &(nand_vector->a_vcap), a);
+	simp_vector_append(&(nand_vector->b), &(nand_vector->b_vtop), &(nand_vector->b_vcap), b);
 
 }
 
-SAT_VECTOR* SAT_VECTOR_create(XNOR_VECTOR* definition) {
+SAT_VECTOR* SAT_VECTOR_create(NAND_VECTOR* definition) {
 
 	if (definition->a_vtop + 1 < 2) {
 		return nullptr;
 	}
 
-	XNOR_VECTOR* translation = SAT_VECTOR_create();
+	SAT_VECTOR* translation = new SAT_VECTOR ();
+
+	translation->a = simp_vector_create(16);
+	translation->b = simp_vector_create(16);
+	translation->c = simp_vector_create(16);
+
+	translation->p = simp_vector_create(16);
+	translation->h = simp_vector_create(16);
+
+	translation->a_vtop = -1;
+	translation->a_vcap = 16;
+	translation->b_vtop = -1;
+	translation->b_vcap = 16;
+	translation->c_vtop = -1;
+	translation->c_vcap = 16;
+
+	translation->p_vtop = -1;
+	translation->p_vcap = 16;
+	translation->h_vtop = -1;
+	translation->h_vcap = 16;
+
+
+	__int64 first_avail_p_h_ix = 1;
 
 	for (__int64 i = 2; i <= definition->a_vtop + 1; i++) {
 		
 		for (__int64 j = i; j >= 0; j--) {
+
+			__int64 p = first_avail_p_h_ix;
+
+			simp_vector_append(&(translation->p), &(translation->p_vtop), &(translation->p_vcap), first_avail_p_h_ix);
+			first_avail_p_h_ix++;
 			
 			for (__int64 k = j-1; k >= 0; k--) {
+
+				__int64 h = first_avail_p_h_ix;
+
+				simp_vector_append(&(translation->h), &(translation->h_vtop), &(translation->h_vcap), first_avail_p_h_ix);
+				first_avail_p_h_ix++;
+
+				// (!P | !A | H) & (!H | !B | C) & (!P | A | C) & (!P | B | C)
 				
-				simp_vector_append(&(translation->a), &(translation->a_vtop), &(translation->a_vcap), definition->a[j]);
-				simp_vector_append(&(translation->b), &(translation->b_vtop), &(translation->b_vcap), definition->b[k]);
-				simp_vector_append(&(translation->c), &(translation->c_vtop), &(translation->c_vcap), definition->c[i]);
+				simp_vector_append(&(translation->a), &(translation->a_vtop), &(translation->a_vcap), -p);
+				simp_vector_append(&(translation->b), &(translation->b_vtop), &(translation->b_vcap), -j);
+				simp_vector_append(&(translation->c), &(translation->c_vtop), &(translation->c_vcap), h);
+
+				simp_vector_append(&(translation->a), &(translation->a_vtop), &(translation->a_vcap), -h);
+				simp_vector_append(&(translation->b), &(translation->b_vtop), &(translation->b_vcap), -k);
+				simp_vector_append(&(translation->c), &(translation->c_vtop), &(translation->c_vcap), i);
+
+				simp_vector_append(&(translation->a), &(translation->a_vtop), &(translation->a_vcap), -p);
+				simp_vector_append(&(translation->b), &(translation->b_vtop), &(translation->b_vcap), j);
+				simp_vector_append(&(translation->c), &(translation->c_vtop), &(translation->c_vcap), i);
+
+				simp_vector_append(&(translation->a), &(translation->a_vtop), &(translation->a_vcap), -p);
+				simp_vector_append(&(translation->b), &(translation->b_vtop), &(translation->b_vcap), k);
+				simp_vector_append(&(translation->c), &(translation->c_vtop), &(translation->c_vcap), i);
 			}
 
 		}
