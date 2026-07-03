@@ -38,7 +38,7 @@ void simp_quantum_point_vector_append(Quantum_Point*** v, __int64* vtop, __int64
 
 }
 
-Quantum_Point* UniverseComputerSimulation_create_quantum_point(__int64 x, __int64 y, __int64 z, energy_state quantum_state) {
+Quantum_Point* QuantumUniverseComputerSimulation_create_quantum_point(__int64 x, __int64 y, __int64 z, energy_state quantum_state) {
 
     Quantum_Point* q_point = new Quantum_Point();
 
