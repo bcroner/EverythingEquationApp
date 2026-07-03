@@ -8,7 +8,7 @@
 int main() {
 
 	XNOR_VECTOR* definition = XNOR_VECTOR_create();
-	XNOR_VECTOR* translation = XNOR_VECTOR_create();
+	SAT_VECTOR* translation = SAT_VECTOR_create();
 
     return 0;
 }

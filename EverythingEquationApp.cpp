@@ -50,13 +50,13 @@ void XNOR_VECTOR_create_entry(XNOR_VECTOR* xnor_vector, __int64 a, __int64 b) {
 
 }
 
-XNOR_VECTOR* XNOR_VECTOR_create_translation(XNOR_VECTOR* definition) {
+SAT_VECTOR* SAT_VECTOR_create(XNOR_VECTOR* definition) {
 
 	if (definition->a_vtop + 1 < 2) {
 		return nullptr;
 	}
 
-	XNOR_VECTOR* translation = XNOR_VECTOR_create();
+	XNOR_VECTOR* translation = SAT_VECTOR_create();
 
 	for (__int64 i = 2; i <= definition->a_vtop + 1; i++) {
 		
@@ -66,6 +66,7 @@ XNOR_VECTOR* XNOR_VECTOR_create_translation(XNOR_VECTOR* definition) {
 				
 				simp_vector_append(&(translation->a), &(translation->a_vtop), &(translation->a_vcap), definition->a[j]);
 				simp_vector_append(&(translation->b), &(translation->b_vtop), &(translation->b_vcap), definition->b[k]);
+				simp_vector_append(&(translation->c), &(translation->c_vtop), &(translation->c_vcap), definition->c[i]);
 			}
 
 		}
@@ -74,6 +75,26 @@ XNOR_VECTOR* XNOR_VECTOR_create_translation(XNOR_VECTOR* definition) {
 
 	return translation;
 
+}
+
+SAT_VECTOR* SAT_VECTOR_destroy(SAT_VECTOR* sat_vector) {
+	if (sat_vector) {
+		if (sat_vector->a) {
+			delete[] sat_vector->a;
+			sat_vector->a = nullptr;
+		}
+		if (sat_vector->b) {
+			delete[] sat_vector->b;
+			sat_vector->b = nullptr;
+		}
+		if (sat_vector->c) {
+			delete[] sat_vector->c;
+			sat_vector->c = nullptr;
+		}
+		delete sat_vector;
+		sat_vector = nullptr;
+	}
+	return sat_vector;
 }
 
 #endif
