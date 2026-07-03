@@ -79,7 +79,9 @@ SAT_VECTOR* SAT_VECTOR_create(NAND_VECTOR* definition) {
 	__int64 first_avail_p_h_ix = 1;
 	__int64 k_parm = 0;
 
-	for (__int64 i = 2; i <= definition->a_vtop + 1; i++) {
+	for (__int64 i = 0; i <= definition->a_vtop + 1; i++) {
+
+		__int64 c = i + 2;
 		
 		for (__int64 j = i; j >= 0; j--) {
 
@@ -95,23 +97,26 @@ SAT_VECTOR* SAT_VECTOR_create(NAND_VECTOR* definition) {
 				simp_vector_append(&(translation->h), &(translation->h_vtop), &(translation->h_vcap), p);
 				first_avail_p_h_ix++;
 
+				__int64 a = j + 2;
+				__int64 b = k + 2;
+
 				// (!P | !A | H) & (!H | !B | C) & (!P | A | C) & (!P | B | C)
 				
 				simp_vector_append(&(translation->a), &(translation->a_vtop), &(translation->a_vcap), -p);
-				simp_vector_append(&(translation->b), &(translation->b_vtop), &(translation->b_vcap), -j);
+				simp_vector_append(&(translation->b), &(translation->b_vtop), &(translation->b_vcap), -a);
 				simp_vector_append(&(translation->c), &(translation->c_vtop), &(translation->c_vcap), h);
 
 				simp_vector_append(&(translation->a), &(translation->a_vtop), &(translation->a_vcap), -h);
-				simp_vector_append(&(translation->b), &(translation->b_vtop), &(translation->b_vcap), -k);
-				simp_vector_append(&(translation->c), &(translation->c_vtop), &(translation->c_vcap), i);
+				simp_vector_append(&(translation->b), &(translation->b_vtop), &(translation->b_vcap), -b);
+				simp_vector_append(&(translation->c), &(translation->c_vtop), &(translation->c_vcap), c);
 
 				simp_vector_append(&(translation->a), &(translation->a_vtop), &(translation->a_vcap), -p);
-				simp_vector_append(&(translation->b), &(translation->b_vtop), &(translation->b_vcap), j);
-				simp_vector_append(&(translation->c), &(translation->c_vtop), &(translation->c_vcap), i);
+				simp_vector_append(&(translation->b), &(translation->b_vtop), &(translation->b_vcap), a);
+				simp_vector_append(&(translation->c), &(translation->c_vtop), &(translation->c_vcap), c);
 
 				simp_vector_append(&(translation->a), &(translation->a_vtop), &(translation->a_vcap), -p);
-				simp_vector_append(&(translation->b), &(translation->b_vtop), &(translation->b_vcap), k);
-				simp_vector_append(&(translation->c), &(translation->c_vtop), &(translation->c_vcap), i);
+				simp_vector_append(&(translation->b), &(translation->b_vtop), &(translation->b_vcap), b);
+				simp_vector_append(&(translation->c), &(translation->c_vtop), &(translation->c_vcap), c);
 
 				k_parm += 4;
 			}
