@@ -1,8 +1,8 @@
 // 3SATBase.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
 
-#ifndef __3SATBASECONSOLE_H__
-#define __3SATBASECONSOLE_H__
+#ifndef __SATSOLVER_HPP__
+#define __SATSOLVER_HPP__
 
 #define FALSE_3SAT -1
 #define TRUE_3SAT 1

@@ -1,11 +1,11 @@
 // 3SAT_framework.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
 
-#ifndef __3SATFRAMEWORK_C__
-#define __3SATFRAMEWORK_C__
+#ifndef __SATFRAMEWORK_CPP__
+#define __SATFRAMEWORK_CPP__
 
-#include "3SAT_framework.hpp"
-#include "3SATBaseConsole.hpp"
+#include "SATFramework.hpp"
+#include "SATSolver.hpp"
 
 #include <iostream>
 #include <stdio.h>

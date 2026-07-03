@@ -1,8 +1,8 @@
 #ifndef __EVERYTHINGEQUATIONAPP_CPP__
 #define __EVERYTHINGEQUATIONAPP_CPP__
 
-#include "getfactors/3SATBaseConsole.hpp"
-#include "getfactors/3SAT_framework.hpp"
+#include "SATSolver.hpp"
+#include "SATFramework.hpp"
 #include "EverythingEquationApp.hpp"
 
 XNOR_VECTOR* XNOR_VECTOR_create() {
@@ -15,6 +15,11 @@ XNOR_VECTOR* XNOR_VECTOR_create() {
 	xnor_vector->a_vcap = 16;
 	xnor_vector->b_vtop = -1;
 	xnor_vector->b_vcap = 16;
+
+	simp_vector_append(&(xnor_vector->a), &(xnor_vector->a_vtop), &(xnor_vector->a_vcap), TRUE_3SAT);
+	simp_vector_append(&(xnor_vector->b), &(xnor_vector->b_vtop), &(xnor_vector->b_vcap), TRUE_3SAT);
+	simp_vector_append(&(xnor_vector->a), &(xnor_vector->a_vtop), &(xnor_vector->a_vcap), FALSE_3SAT);
+	simp_vector_append(&(xnor_vector->b), &(xnor_vector->b_vtop), &(xnor_vector->b_vcap), FALSE_3SAT);
 
 	return xnor_vector;
 }
