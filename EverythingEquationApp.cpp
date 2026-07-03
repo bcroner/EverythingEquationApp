@@ -1,0 +1,4 @@
+#ifndef __EVERYTHINGEQUATIONAPP_CPP__
+#define __EVERYTHINGEQUATIONAPP_CPP__
+
+#endif

@@ -1,0 +1,4 @@
+#ifndef __EVERYTHINGEQUATIONAPP_HPP__
+#define __EVERYTHINGEQUATIONAPP_HPP__
+
+#endif
