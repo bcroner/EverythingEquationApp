@@ -32,6 +32,8 @@ typedef struct UniverseComputerSimulation_tag {
 
 } UniverseComputerSimulation;
 
+enum claim_class { mathematically_false, mathematically_true, factual_claim, explanation }; // mathematically_false: a claim that is logically impossible to be true, mathematically_true: a claim that is logically impossible to be false, factual_claim: a claim that is accepted as knowledge because all claims in it are either mathematically true or other factual claims, explanation: a claim that contains at least one other explanation that has not yet been proven to be mathematically false
+
 Quantum_Point* simp_quantum_point_vector_create(__int64 init_sz);
 Quantum_Point* simp_quantum_point_vector_read(Quantum_Point** v, __int64 vtop, __int64 vcap, __int64 loc);
 void simp_quantum_point_vector_append(Quantum_Point*** v, __int64* vtop, __int64* vcap, Quantum_Point* data);
