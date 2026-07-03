@@ -15,6 +15,9 @@ typedef struct NAND_VECTOR_tag {
 
 typedef struct SAT_VECTOR_tag {
 
+	__int64 k;
+	__int64 n;
+
 	__int64* a;
 	__int64* b;
 	__int64* c;

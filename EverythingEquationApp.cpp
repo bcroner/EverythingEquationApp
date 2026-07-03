@@ -126,6 +126,9 @@ SAT_VECTOR* SAT_VECTOR_create(NAND_VECTOR* definition) {
 
 	}
 
+	translation->k = translation->a_vtop + 1;
+	translation->n = translation->p_vtop + 1;
+
 	return translation;
 
 }
