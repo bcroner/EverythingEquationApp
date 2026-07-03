@@ -11,6 +11,8 @@ enum energy_state {
 
 typedef struct Point_tag {
 
+	__int64 id;
+
 	__int64 x;
 	__int64 y;
 	__int64 z;
@@ -31,6 +33,8 @@ typedef struct ID_Pool_tag {
 } ID_Pool;
 
 typedef struct Atom_Star_Galaxy_Dark_Matter_tag {
+
+	__int64 id;
 
 	__int64 x;
 	__int64 y;
@@ -56,6 +60,8 @@ typedef struct PointUniverseComputerSimulation_tag {
 
 	__int64 axis_2_pow;
 
+	ID_Pool* points_id_pool;
+
 	Point** points;
 
 	__int64 points_vtop;
@@ -70,6 +76,8 @@ typedef struct ASGDMUniverseComputerSimulation_tag {
 	direction time_direction;
 
 	__int64 axis_2_pow;
+
+	ID_Pool* atom_star_galaxy_dark_matter_points_id_pool;
 
 	Atom_Star_Galaxy_Dark_Matter** atom_star_galaxy_dark_matter_points;
 
