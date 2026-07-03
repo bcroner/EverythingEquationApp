@@ -87,7 +87,7 @@ bool* SATSolver_create_boundary(bool begin, __int64 chop, __int64 offs, __int64 
 
 }
 
-void SATSolver_create(SATSolver* s, __int64** lst, __int64 k, __int64 n, __int64 chops, __int64 chop, __int64 leading_trues) {
+void SATSolver_create(SATSolver* s, __int64* a, __int64* b, __int64* c, __int64 k, __int64 n, __int64 chops, __int64 chop, __int64 leading_trues){
 
     s->k = k;
     s->n = n;
@@ -112,9 +112,9 @@ void SATSolver_create(SATSolver* s, __int64** lst, __int64 k, __int64 n, __int64
 
     for (__int64 i = 0; i < k; i++) {
 
-        s->inopcell_l[i] = lst[i][0];
-        s->inopcell_m[i] = lst[i][1];
-        s->inopcell_r[i] = lst[i][2];
+        s->inopcell_l[i] = a[i];
+        s->inopcell_m[i] = b[i];
+        s->inopcell_r[i] = c[i];
 
         //printf_s("%lld: %lld %lld %lld\n", i, lst[i][0], lst[i][1], lst[i][2]);
     }
@@ -782,13 +782,13 @@ bool SATSolver_isSat(SATSolver* s, bool* sln) {
     return is_sat;
 }
 
-void thread_3SAT(bool* arr, bool* is_sat, __int64** lst, __int64 k_parm, __int64 n_parm, __int64 chops, __int64 chop, __int64 leading_trues) {
+void thread_3SAT(bool* arr, bool* is_sat, __int64* a, __int64* b, __int64* c, __int64 k_parm, __int64 n_parm, __int64 chops, __int64 chop, __int64 leading_trues) {
 
     if (*is_sat)
         return;
 
     SATSolver* s = new SATSolver();
-    SATSolver_create(s, lst, k_parm, n_parm, chops, chop, leading_trues);
+    SATSolver_create(s, a, b, c, k_parm, n_parm, chops, chop, leading_trues);
 
     *is_sat |= SATSolver_isSat(s, arr);
 
@@ -796,7 +796,7 @@ void thread_3SAT(bool* arr, bool* is_sat, __int64** lst, __int64 k_parm, __int64
     delete s;
 }
 
-bool SATSolver_threads(__int64** lst, __int64 k_parm, __int64 n_parm, bool* arr, __int64 leading_trues) {
+bool SATSolver_threads(__int64* a, __int64* b, __int64* c, __int64 k_parm, __int64 n_parm, bool* arr, __int64 leading_trues) {
 
     __int64 num_threads = std::thread::hardware_concurrency();
     if (num_threads <= 0) num_threads = 1;
@@ -824,7 +824,7 @@ bool SATSolver_threads(__int64** lst, __int64 k_parm, __int64 n_parm, bool* arr,
 
     // Scheduling the consumers
     for (__int64 i = 0; i < search_sz; i++) {
-        list.push_back(pool_of_consumers.schedule(thread_3SAT, arr, &is_sat, lst, k_parm, n_parm, chops, i, leading_trues));
+        list.push_back(pool_of_consumers.schedule(thread_3SAT, arr, &is_sat, a, b, c, k_parm, n_parm, chops, i, leading_trues));
     }
 
     // Waiting for the consumers to complete.
