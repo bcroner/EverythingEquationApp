@@ -542,6 +542,7 @@ bool SATSolver_isSat(SATSolver* s, bool* sln) {
         always_f[i] = false;
         always_t[i] = false;
     }
+    always_f[0] = true;
     always_t[1] = true;
 
     for (__int64 i = 0; i < s->k; i++) {
