@@ -64,7 +64,7 @@ XNOR_VECTOR* XNOR_VECTOR_create_translation(XNOR_VECTOR* definition) {
 			
 			for (__int64 k = j-1; k >= 0; k--) {
 				
-				simp_vector_append(&(translation->a), &(translation->a_vtop), &(translation->a_vcap), -definition->a[j]);
+				simp_vector_append(&(translation->a), &(translation->a_vtop), &(translation->a_vcap), definition->a[j]);
 				simp_vector_append(&(translation->b), &(translation->b_vtop), &(translation->b_vcap), definition->b[k]);
 			}
 
