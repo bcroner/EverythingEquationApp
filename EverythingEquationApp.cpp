@@ -77,6 +77,7 @@ SAT_VECTOR* SAT_VECTOR_create(NAND_VECTOR* definition) {
 	translation->h_vcap = 16;
 
 	__int64 first_avail_p_h_ix = 1;
+	__int64 k_parm = 0;
 
 	for (__int64 i = 2; i <= definition->a_vtop + 1; i++) {
 		
@@ -111,6 +112,8 @@ SAT_VECTOR* SAT_VECTOR_create(NAND_VECTOR* definition) {
 				simp_vector_append(&(translation->a), &(translation->a_vtop), &(translation->a_vcap), -p);
 				simp_vector_append(&(translation->b), &(translation->b_vtop), &(translation->b_vcap), k);
 				simp_vector_append(&(translation->c), &(translation->c_vtop), &(translation->c_vcap), i);
+
+				k_parm += 4;
 			}
 
 		}
@@ -126,8 +129,8 @@ SAT_VECTOR* SAT_VECTOR_create(NAND_VECTOR* definition) {
 
 	}
 
-	translation->k = translation->a_vtop + 1;
-	translation->n = translation->p_vtop + 1;
+	translation->k = k_parm;
+	translation->n = translation->a_vtop + first_avail_p_h_ix;
 
 	return translation;
 
