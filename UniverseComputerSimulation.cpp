@@ -3,6 +3,45 @@
 
 #include "UniverseComputerSimulation.hpp"
 
+void check_claims(KNOWLEDGE_BASE* knowledge_base) {
+
+    for (__int64 i = 0; i <= knowledge_base->claims_vtop; i++) {
+
+        CLAIM* claim = knowledge_base->claims[i];
+        
+        for (__int64 j = 0; j <= claim->claim->a_vtop; j++) {
+
+            __int64 a = claim->claim->a[j];
+            __int64 b = claim->claim->b[j];
+
+			bool a_passes = false;
+			bool b_passes = false;
+
+            for (__int64 k = 0; k <= knowledge_base->claimoid_classifications->claimoids_vtop; k++) {
+
+                if (knowledge_base->claimoid_classifications->claimoids[k] == a && (knowledge_base->claimoid_classifications->claimoid_classes[k] == mathematically_true || knowledge_base->claimoid_classifications->claimoid_classes[k] == factual_claim))
+					a_passes = true;
+                if (knowledge_base->claimoid_classifications->claimoids[k] == b && (knowledge_base->claimoid_classifications->claimoid_classes[k] == mathematically_true || knowledge_base->claimoid_classifications->claimoid_classes[k] == factual_claim))
+                    b_passes = true;
+
+                if (a_passes && b_passes)
+					break;
+
+			}
+            
+            if (a_passes && b_passes) {
+
+                claim->classification = factual_claim;
+
+
+
+            }
+
+		}
+	}   
+
+}
+
 Point* simp_point_vector_create(__int64 init_sz) {
 
     Point* ret = new Point[init_sz];

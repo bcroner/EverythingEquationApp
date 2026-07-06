@@ -14,11 +14,25 @@ typedef struct ID_Pool_tag {
 
 enum claim_class { mathematically_false, mathematically_true, factual_claim, explanation }; // mathematically_false: a claim that is logically impossible to be true, mathematically_true: a claim that is logically impossible to be false, factual_claim: a claim that is accepted as knowledge because all claims in it are either mathematically true or other factual claims, explanation: a claim that contains at least one other explanation that has not yet been proven to be mathematically false
 
+typedef struct CLAIMOID_CLASS_tag {
+
+	__int64* claimoids;
+	claim_class* claimoid_classes;
+
+	__int64 claimoid_vtop;
+	__int64 claimoids_vcap;
+	__int64 claimoid_classes_vtop;
+	__int64 claimoid_classes_vcap;
+
+} CLAIMOID_CLASS;
+
 typedef struct CLAIM_tag {
 
 	__int64 id;
 
 	NAND_VECTOR* claim;
+
+	claim_class classification;
 
 } CLAIM;
 
@@ -27,6 +41,8 @@ typedef struct KNOWLEDGE_BASE_tag {
 	__int64 id;
 
 	CLAIM** claims;
+
+	CLAIMOID_CLASS* claimoid_classifications;
 
 	__int64 claims_vtop;
 	__int64 claims_vcap;
@@ -89,7 +105,7 @@ typedef struct Universe_Computer_Simulation_tag {
 
 } Universe_Computer_Simulation;
 
-
+void check_claims(KNOWLEDGE_BASE* knowledge_base);
 Point* simp_point_vector_create(__int64 init_sz);
 Point* simp_point_vector_read(Point** v, __int64 vtop, __int64 vcap, __int64 loc);
 void simp_point_vector_append(Point*** v, __int64* vtop, __int64* vcap, Point* data);
