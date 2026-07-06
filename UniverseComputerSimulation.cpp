@@ -33,7 +33,11 @@ void check_claims(KNOWLEDGE_BASE* knowledge_base) {
 
                 claim->classification = factual_claim;
 
-
+				// check for internal consistency of all claims considered to be factual claims in the knowledge base
+				// if consistent, exit the check_claims function
+				// if the set of all factual claims in the knowledge base is internally inconsistent, then each claim is checked on a claimoid basis and the values of the claimoids are stored
+				// if the stored value of any claimoid is found to be inconsistent with the stored value of that claimoid in any other claim, then the claim's classification is set to explanation
+				// all claims containing any claimoid that is found to be inconsistent with the stored value of that claimoid in any other claim are set to explanation
 
             }
 
