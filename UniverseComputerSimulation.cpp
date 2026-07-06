@@ -38,21 +38,9 @@ void simp_point_vector_append(Point*** v, __int64* vtop, __int64* vcap, Point* d
 
 }
 
-Point* PointUniverseComputerSimulation_create_point(__int64 x, __int64 y, __int64 z, energy_state point_state) {
+Point* create_point(__int64 x, __int64 y, __int64 z, __int64 mass) {
 
     Point* point = new Point();
-
-    point->x = x;
-    point->y = y;
-    point->z = z;
-    point->point_state = point_state;
-
-	return point;
-}
-
-Atom_Star_Galaxy_Dark_Matter* atom_star_galaxy_dark_matter_point_universe_computer_simulation_create_point(__int64 x, __int64 y, __int64 z, __int64 mass) {
-
-    Atom_Star_Galaxy_Dark_Matter* point = new Atom_Star_Galaxy_Dark_Matter();
     point->x = x;
     point->y = y;
     point->z = z;
