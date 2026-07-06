@@ -1,6 +1,8 @@
 #ifndef __UNIVERSECOMPUTERSIMULATION_HPP__
 #define __UNIVERSECOMPUTERSIMULATION_HPP__
 
+#include "EverythingEquationApp.hpp"
+
 enum direction {
 	reverse, forward
 };
@@ -8,20 +10,6 @@ enum direction {
 enum energy_state {
 	ground, excited
 };
-
-typedef struct Point_tag {
-
-	__int64 id;
-
-	__int64 x;
-	__int64 y;
-	__int64 z;
-
-	energy_state point_state;
-
-	__int64 mass;
-
-} Point;
 
 typedef struct ID_Pool_tag {
 
@@ -32,16 +20,18 @@ typedef struct ID_Pool_tag {
 
 } ID_Pool;
 
-typedef struct Atom_Star_Galaxy_Dark_Matter_tag {
+typedef struct Point_tag {
 
 	__int64 id;
 
 	__int64 x;
 	__int64 y;
 	__int64 z;
+
 	__int64 mass;
 
-} Atom_Star_Galaxy_Dark_Matter;
+} Point;
+
 
 typedef struct GRAVITY_VECTOR_tag {
 
@@ -54,33 +44,41 @@ typedef struct GRAVITY_VECTOR_tag {
 
 enum claim_class { mathematically_false, mathematically_true, factual_claim, explanation }; // mathematically_false: a claim that is logically impossible to be true, mathematically_true: a claim that is logically impossible to be false, factual_claim: a claim that is accepted as knowledge because all claims in it are either mathematically true or other factual claims, explanation: a claim that contains at least one other explanation that has not yet been proven to be mathematically false
 
-typedef struct UniverseComputerSimulation_tag {
-
-	direction time_direction;
+typedef struct Universe_Computer_Simulation_State_tag {
 
 	__int64 axis_2_pow;
 
 	ID_Pool* id_pool;
 
 	Point** points;
-	Atom_Star_Galaxy_Dark_Matter** atom_star_galaxy_dark_matter_points;
 
 	__int64 points_vtop;
 	__int64 points_vcap;
 
-	__int64 atom_star_galaxy_dark_matter_points_vtop;
-	__int64 atom_star_galaxy_dark_matter_points_vcap;
+	claim_class points_claim_classification;
 
-	claim_class points_claim_classification = mathematically_true;
-	claim_class atom_star_galaxy_dark_matter_points_claim_classification = explanation;
+} Universe_Computer_Simulation_State;
 
-} UniverseComputerSimulation;
+typedef struct Universe_Computer_Simulation_tag {
+
+	direction time_direction;
+
+	Universe_Computer_Simulation_State* omega_state; // beginning state of the universe computer simulation, earlier in time than the alpha state
+	Universe_Computer_Simulation_State* alpha_state; // end state of the universe computer simulation, later in time than the omega state
+
+	NAND_VECTOR* shortest_satisfied_nand_vector;	// the shortest NAND vector that satisfies the universe computer simulation logic, if one exists, otherwise nullptr
+	NAND_VECTOR* current_nand_vector;				// the current NAND logic vector that is being tested to see if it satisfies the universe computer simulation
+	SAT_VECTOR* current_sat_vector;					// the current SAT vector derived from the current NAND vector built from the universe computer simulation NAND logic
+
+	__int64 initial_nand_vector_length;				// the initial length of the NAND vector that is being tested to see if it satisfies the universe computer simulation
+
+} Universe_Computer_Simulation;
+
 
 Point* simp_point_vector_create(__int64 init_sz);
 Point* simp_point_vector_read(Point** v, __int64 vtop, __int64 vcap, __int64 loc);
 void simp_point_vector_append(Point*** v, __int64* vtop, __int64* vcap, Point* data);
 Point* point_universe_computer_simulation_create_point(__int64 x, __int64 y, __int64 z, energy_state point_state);
-Atom_Star_Galaxy_Dark_Matter* atom_star_galaxy_dark_matter_point_universe_computer_simulation_create_point(__int64 x, __int64 y, __int64 z, __int64 mass);
 __int64* simp_vector_create(__int64 init_sz);
 __int64 simp_vector_read(__int64* v, __int64 vtop, __int64 vcap, __int64 loc);
 void simp_vector_append(__int64** v, __int64* vtop, __int64* vcap, __int64 data);
