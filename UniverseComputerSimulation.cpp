@@ -14,10 +14,30 @@ void check_claims(KNOWLEDGE_BASE* knowledge_base) {
             __int64 a = claim->claim->a[j];
             __int64 b = claim->claim->b[j];
 
-			bool a_passes = false;
-			bool b_passes = false;
+			bool a_passes = true;
+			bool b_passes = true;
 
-            for (__int64 k = 0; k <= knowledge_base->claimoid_classifications->claimoids_vtop; k++) {
+            for (__int64 k = 0; k <= knowledge_base->claimoid_classifications->claimoid_classes_vtop + 1; k++) {
+
+                if (knowledge_base->claimoid_classifications->claimoids[k] == a && knowledge_base->claimoid_classifications->claimoid_classes[k] == mathematically_false)
+                    a_passes = false;
+                if (knowledge_base->claimoid_classifications->claimoids[k] == b && knowledge_base->claimoid_classifications->claimoid_classes[k] == mathematically_false)
+                    b_passes = false;
+
+                if (!a_passes || !b_passes)
+                    break;
+
+            }
+
+            if (!a_passes || !b_passes) {
+                claim->classification = mathematically_false;
+                continue;
+			}
+
+			a_passes = false;
+			b_passes = false;
+
+            for (__int64 k = 0; k <= knowledge_base->claimoid_classifications->claimoid_classes_vtop + 1; k++) {
 
                 if (knowledge_base->claimoid_classifications->claimoids[k] == a && (knowledge_base->claimoid_classifications->claimoid_classes[k] == mathematically_true || knowledge_base->claimoid_classifications->claimoid_classes[k] == factual_claim))
 					a_passes = true;
