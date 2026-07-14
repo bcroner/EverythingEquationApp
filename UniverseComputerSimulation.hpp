@@ -16,13 +16,19 @@ enum claim_class { mathematically_false, mathematically_true, factual_claim, exp
 
 typedef struct CLAIMOID_CLASS_tag {
 
-	__int64* claimoids;
-	claim_class* claimoid_classes;
+	__int64* claimoids_l;
+	claim_class* claimoid_l_classes;
+	__int64* claimoids_r;
+	claim_class* claimoid_r_classes;
 
-	__int64 claimoid_vtop;
-	__int64 claimoids_vcap;
-	__int64 claimoid_classes_vtop;
-	__int64 claimoid_classes_vcap;
+	__int64 claimoid_l_vtop;
+	__int64 claimoids_l_vcap;
+	__int64 claimoid_r_vtop;
+	__int64 claimoids_r_vcap;
+	__int64 claimoid_l_classes_vtop;
+	__int64 claimoid_l_classes_vcap;
+	__int64 claimoid_r_classes_vtop;
+	__int64 claimoid_r_classes_vcap;
 
 } CLAIMOID_CLASS;
 
