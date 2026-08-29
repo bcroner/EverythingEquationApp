@@ -99,8 +99,6 @@ SAT_VECTOR* SAT_VECTOR_create(NAND_VECTOR* definition) {
 
 				__int64 a = j;
 				__int64 b = k;
-
-				// (!P | !A | H) & (!H | !B | C) & (!P | A | C) & (!P | B | C)
 				
 				simp_vector_append(&(translation->a), &(translation->a_vtop), &(translation->a_vcap), -p);
 				simp_vector_append(&(translation->b), &(translation->b_vtop), &(translation->b_vcap), -a);
@@ -154,6 +152,14 @@ SAT_VECTOR* SAT_VECTOR_destroy(SAT_VECTOR* sat_vector) {
 		if (sat_vector->c) {
 			delete[] sat_vector->c;
 			sat_vector->c = nullptr;
+		}
+		if (sat_vector->p) {
+			delete[] sat_vector->p;
+			sat_vector->p = nullptr;
+		}
+		if (sat_vector->h) {
+			delete[] sat_vector->h;
+			sat_vector->h = nullptr;
 		}
 		delete sat_vector;
 		sat_vector = nullptr;

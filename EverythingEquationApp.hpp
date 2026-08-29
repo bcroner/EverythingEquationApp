@@ -6,10 +6,10 @@ typedef struct NAND_VECTOR_tag {
 	__int64* a;
 	__int64* b;
 
-	_int64 a_vtop;
-	_int64 a_vcap;
-	_int64 b_vtop;
-	_int64 b_vcap;
+	__int64 a_vtop;
+	__int64 a_vcap;
+	__int64 b_vtop;
+	__int64 b_vcap;
 
 } NAND_VECTOR;
 
